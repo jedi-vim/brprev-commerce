@@ -1,0 +1,8 @@
+[development]
+sqlalchemy_database_uri = "postgresql+psycopg2://brprev_commerce_user:IWKdrWWnc6XA39pgX6PU@localhost:5453/brprev_commerce_db"
+
+[testing]
+sqlalchemy_database_uri = "postgresql+psycopg2://brprev_commerce_user:IWKdrWWnc6XA39pgX6PU@localhost:5454/brprev_commerce_db"
+
+[docker]
+sqlalchemy_database_uri = "postgresql+psycopg2://brprev_commerce_user:IWKdrWWnc6XA39pgX6PU@db:5432/brprev_commerce_db"
