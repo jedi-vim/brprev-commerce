@@ -1,0 +1,75 @@
+version: "3.7"
+
+services:
+  brprev_commerce-api:
+    build:
+      context: .
+    environment:
+      CREATE_DATABASE: ${CREATE_DATABASE-true}
+      ENV_FOR_DYNACONF: docker
+    image: brprev_commerce/api
+    container_name: brprev_commerce-api
+    command: sh -c './wait-for-pg.sh -t 30 db:5432 -- ./docker_start.sh'
+    ports:
+      - '4000:4000'
+    depends_on:
+      - docker_db
+    networks:
+      - postgres_network
+
+  docker_db:
+    image: postgres:11.3-alpine
+    container_name: brprev_commerce-docker_db
+    restart: always
+    environment:
+      - POSTGRES_DB=brprev_commerce_db
+      - POSTGRES_USER=brprev_commerce_user
+      - POSTGRES_PASSWORD=IWKdrWWnc6XA39pgX6PU
+    volumes:
+        - postgres_brprev_commerce_docker:/var/lib/postgresql/data
+    networks:
+      postgres_network:
+         aliases:
+            - db
+  
+  development_db:
+    container_name: brprev_commerce-development_db
+    image: postgres:11.3-alpine
+    environment:
+      - POSTGRES_DB=brprev_commerce_db
+      - POSTGRES_USER=brprev_commerce_user
+      - POSTGRES_PASSWORD=IWKdrWWnc6XA39pgX6PU
+    volumes:
+        - postgres_brprev_commerce_dev:/var/lib/postgresql/data
+    ports:
+      - "5453:5432" 
+
+  test_db:
+    container_name: brprev_commerce-test_db
+    image: postgres:11.3-alpine
+    environment:
+      - POSTGRES_DB=brprev_commerce_db
+      - POSTGRES_USER=brprev_commerce_user
+      - POSTGRES_PASSWORD=IWKdrWWnc6XA39pgX6PU
+    volumes:
+        - postgres_brprev_commerce_test:/var/lib/postgresql/data
+    ports:
+      - "5454:5432"
+
+volumes:
+  postgres_brprev_commerce_docker:
+    driver: local
+    name: postgres_brprev_commerce_docker
+
+  postgres_brprev_commerce_test:
+    driver: local
+    name: postgres_brprev_commerce_test
+
+  postgres_brprev_commerce_dev:
+    driver: local
+    name: postgres_brprev_commerce_dev
+
+networks:
+  postgres_network:
+    driver: bridge
+
