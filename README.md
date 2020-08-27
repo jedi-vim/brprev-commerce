@@ -60,3 +60,5 @@ The commands in the makefile start with the prefix of the desired environment.
  # Run containers
  $ make docker-run
 ```
+
+You can use the pytext fixture *auth_header* as example to create a new user and get a access_token.
