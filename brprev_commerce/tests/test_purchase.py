@@ -8,7 +8,7 @@ from brprev_commerce.tests.factories import (CustomerFactory, ProductFactory,
                                              PurchaseFactory)
 
 
-def test_init_purchase(app, auth_mock, auth_header):
+def test_init_purchase(app, auth_header):
     customer = CustomerFactory()
     db.session.flush()
 
@@ -67,7 +67,7 @@ def test_init_purchase(app, auth_mock, auth_header):
         }]
     })
 ])
-def test_init_purchase_with_invalid_payload(app, auth_mock, auth_header,
+def test_init_purchase_with_invalid_payload(app, auth_header,
                                             payload, status_code,
                                             expected_response):
     response = app.post('/api/v1/purchase', headers=auth_header, json=payload)
@@ -75,7 +75,7 @@ def test_init_purchase_with_invalid_payload(app, auth_mock, auth_header,
     assert response.status_code == status_code
 
 
-def test_close_purchase(app, auth_mock, auth_header):
+def test_close_purchase(app, auth_header):
     purchase = PurchaseFactory()
     db.session.flush()
     response = app.delete(f'/api/v1/purchase/{purchase.id}',
@@ -98,7 +98,7 @@ def test_close_purchase(app, auth_mock, auth_header):
     }
 
 
-def test_close_purchase_already_closed(app, auth_mock, auth_header):
+def test_close_purchase_already_closed(app, auth_header):
     purchase = PurchaseFactory()
     purchase.close()
     db.session.flush()
@@ -174,14 +174,14 @@ def test_close_purchase_already_closed(app, auth_mock, auth_header):
         }]
     })
 ])
-def test_create_product(app, auth_mock, auth_header,
+def test_create_product(app, auth_header,
                         payload, status_code, expected_response):
     response = app.post('/api/v1/product', headers=auth_header, json=payload)
     assert response.status_code == status_code
     assert response.get_json() == expected_response
 
 
-def test_add_item_to_purchase(app, auth_mock, auth_header):
+def test_add_item_to_purchase(app, auth_header):
     product = ProductFactory()
     purchase = PurchaseFactory()
     db.session.flush()
@@ -221,7 +221,7 @@ def test_add_item_to_purchase(app, auth_mock, auth_header):
     }
 
 
-def test_add_item_to_a_nonexistent_purchase(app, auth_mock, auth_header):
+def test_add_item_to_a_nonexistent_purchase(app, auth_header):
     product = ProductFactory()
     db.session.flush()
     payload = {
@@ -246,7 +246,7 @@ def test_add_item_to_a_nonexistent_purchase(app, auth_mock, auth_header):
     }
 
 
-def test_add_unexistent_product_to_a_purchase(app, auth_mock, auth_header):
+def test_add_unexistent_product_to_a_purchase(app, auth_header):
     with freeze_time('2020-08-25'):
         purchase = PurchaseFactory()
     db.session.flush()

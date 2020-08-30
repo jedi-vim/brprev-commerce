@@ -1,7 +1,7 @@
 import pytest
 
 
-def test_create_customer(app, auth_header, auth_mock):
+def test_create_customer(app, auth_header):
     payload = {
         "data": {
             "type": "customer",
@@ -62,7 +62,7 @@ def test_create_customer(app, auth_header, auth_mock):
         ]
     })
 ])
-def test_create_customer_with_invalid_payload(app, auth_mock, auth_header,
+def test_create_customer_with_invalid_payload(app, auth_header,
                                               payload, expected_response):
     response = app.post('/api/v1/customer', headers=auth_header, json=payload)
     assert response.status_code == 400

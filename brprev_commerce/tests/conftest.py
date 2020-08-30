@@ -3,10 +3,9 @@ from werkzeug.datastructures import Headers
 
 from brprev_commerce.app import create_app
 from brprev_commerce.database import db
-from brprev_commerce.tests.factories import UserFactory
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def app():
     app = create_app()
     app.config['TESTING'] = True
@@ -16,8 +15,8 @@ def app():
         yield app.test_client()
 
 
-@pytest.fixture(scope="session")
-def auth_header(app):
+@pytest.fixture(scope="function")
+def auth_header(app, truncate):
     create_payload = {
         "data": {
             "type": "user",
@@ -38,13 +37,6 @@ def auth_header(app):
 
 
 @pytest.fixture(scope="function")
-def auth_mock(mocker):
-    user = UserFactory(login='test_user', password='1234567a')
-    mocker.patch('brprev_commerce.auth.authenticate', return_value=user)
-    mocker.patch('brprev_commerce.auth.identity', return_value=user)
-
-
-@pytest.fixture(autouse=True, scope="function")
 def truncate(app):
     for table in db.metadata.sorted_tables:
         db.session.execute(f'TRUNCATE {table.name} RESTART IDENTITY CASCADE')
