@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: brprev-api
+spec:
+    selector:
+        matchLabels:
+            name: brprev-api
+            run: flask
+    replicas: 3
+    template:
+        metadata:
+            labels:
+                name: brprev-api
+                run: flask
+        spec:
+            containers:
+            - name: brprev-commerce-api
+              image: jedivim/brprev_commerce:1.2
+              command: 
+                - /bin/sh 
+                - -c 
+                - ./docker_start.sh
+              envFrom:
+                  - configMapRef:
+                      name: brprev.commerce-configmap
+              ports:
+                  - containerPort: 4000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: brprev-api-service
+spec:
+  ports:
+  - port: 4000
+    targetPort: 4000
+    protocol: TCP
+  selector:
+    name: brprev-api
+    run: flask
