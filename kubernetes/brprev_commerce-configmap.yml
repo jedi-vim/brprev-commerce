@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: brprev.commerce-configmap
+data:
+  CREATE_DATABASE: "True"
+  ENV_FOR_DYNACONF: "production"
+  POSTGRES_DB: "brprev_commerce_db"
+  POSTGRES_USER: "brprev_commerce_user"
+  POSTGRES_PASSWORD: "IWKdrWWnc6XA39pgX6PU"

@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1 
+kind: Ingress
+metadata:
+  name: minikube-ingress
+spec:
+    rules:
+    - host: minikube.local
+      http:
+          paths:
+          - path: /
+            backend:
+                serviceName: brprev-api-service
+                servicePort: 4000
