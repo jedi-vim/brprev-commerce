@@ -6,3 +6,6 @@ sqlalchemy_database_uri = "postgresql+psycopg2://brprev_commerce_user:IWKdrWWnc6
 
 [docker]
 sqlalchemy_database_uri = "postgresql+psycopg2://brprev_commerce_user:IWKdrWWnc6XA39pgX6PU@db:5432/brprev_commerce_db"
+
+[production]
+sqlalchemy_database_uri = "postgresql+psycopg2://brprev_commerce_user:IWKdrWWnc6XA39pgX6PU@postgres:5432/brprev_commerce_db"
